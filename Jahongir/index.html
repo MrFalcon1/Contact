@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Obidajnov Jahongir" />
+  <title>Loging</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body {
+      background: url('./0745.jpg_wh1200.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white; height: 100vh;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    header { padding: 2rem; text-align: right; font-size: 2rem; font-weight: bold; text-shadow: 0 0 10px black; }
+    main { text-align: center; margin-top: 5vh; }
+    h1 { font-size: 3rem; text-shadow: 0 0 20px #000; }
+    form {
+      margin: 3rem auto; background-color: rgba(0, 0, 0, 0.6);
+      padding: 2rem; border-radius: 1rem; width: 90%; max-width: 500px;
+    }
+    form input, form textarea, form button {
+      width: 100%; margin-bottom: 1rem; padding: 1rem; border: none; border-radius: 0.5rem; font-size: 1rem;
+    }
+    form button { background-color: #00aced; color: white; cursor: pointer; transition: 0.3s; }
+    form button:hover { background-color: #0084b4; }
+    footer { padding: 1rem; text-align: center; background-color: rgba(0, 0, 0, 0.7); color: #ccc; }
+  </style>
+</head>
+<body>
+  <header>Obidajnov Jahongir</header>
+  <main>
+    <h1>Contact Me</h1>
+    <form id="contact-form">
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <input type="number" name="phone" placeholder="Your Phone Number" required />
+      <textarea name="message" placeholder="Your Message" rows="4" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </main>
+  <footer>&copy;2025 Obidajnov Jahongir</footer>
+
+  <script>
+    document.getElementById("contact-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = {
+        name: e.target.name.value,
+        email: e.target.email.value,
+        phone: e.target.phone.value,
+        message: e.target.message.value
+      };
+      try {
+        const response = await fetch("/api/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData)
+        });
+        const result = await response.json();
+        if (result.success) {
+          alert("✅ Xabar yuborildi!");
+          e.target.reset();
+        } else {
+          alert("❌ Xatolik: " + (result.error || "Noma’lum xato"));
+        }
+      } catch (error) {
+        alert("❌ Tarmoq xatosi: " + error.message);
+      }
+    });
+  </script>
+</body>
+</html>
